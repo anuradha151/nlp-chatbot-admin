@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, List, ListItem, ListItemText, ListItemIcon, Accordion, AccordionSummary, AccordionDetails, Link, Chip, Stack } from '@mui/material';
+import { Box, Typography, List, ListItemText, Accordion, AccordionSummary, AccordionDetails, Link as LinkUI, Chip, Stack, Button } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import axios from 'axios';
 
+import { Link } from "react-router-dom";
+
 function Home() {
-    const [careerInfo, setCareerInfo] = useState([]);
+    const [intents, setIntents] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await axios.get('http://localhost:8000/admin/intents');
-                setCareerInfo(response.data);
+                setIntents(response.data);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -29,11 +31,15 @@ function Home() {
     };
     return (
         <Box sx={{ width: '100%', maxWidth: 600, margin: 'auto' }}>
-            <Typography variant="h5" sx={{ mb: 2 }}>
-                Intent configurations
-            </Typography>
+            <Stack direction="row" spacing={30}>
+                <Typography variant="h5" sx={{ mb: 2 }}>
+                    Intent configurations
+                </Typography>
+                <Button variant="text"><Link to="/create-tag">Create New</Link></Button>
+            </Stack>
+
             <List dense={false}>
-                {careerInfo.map((info) => (
+                {intents.map((info) => (
                     <Accordion key={info.id}>
                         <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`panel${info.id}`}>
                             <ListItemText primary={<Typography variant="body1">{info.tag}</Typography>} />
@@ -52,9 +58,9 @@ function Home() {
 
                             )}
                             {info.tag === 'placement' && (
-                                <Link href={info.response_links[0].text} underline="none" sx={{ color: 'primary.main' }}>
+                                <LinkUI href={info.response_links[0].text} underline="none" sx={{ color: 'primary.main' }}>
                                     Learn More
-                                </Link>
+                                </LinkUI>
                             )}
                             {info.tag === 'fees' && (
                                 <Typography variant="body2">Visit ESOFT website for details.</Typography>
