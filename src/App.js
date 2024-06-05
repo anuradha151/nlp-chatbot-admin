@@ -7,6 +7,7 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
+import UpdateTag from './pages/UpdateTag';
 
 function App() {
   return (
@@ -22,6 +23,10 @@ function App() {
                     <Route
                         path="/create-tag"
                         element={<CreateTag />}
+                    />
+                       <Route
+                        path="/update-tag/:tag"
+                        element={<UpdateTag />}
                     />
                     <Route
                         path="*"

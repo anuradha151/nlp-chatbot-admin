@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from 'react';
 import { TextField, Button, FormControl, FormLabel, FormGroup, Stack, Box, Typography, Link as LinkUI, Alert, AlertTitle } from '@mui/material';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
-const CreateTag = () => {
+
+const UpdateTag = () => {
+
+    const params = useParams();
 
     const [tag, setTag] = useState('');
     const [responseText, setResponseText] = useState('');
@@ -14,6 +18,22 @@ const CreateTag = () => {
 
     const [alert, setAlert] = useState(null);
 
+    const fetchData = async () => {
+        try {
+            const response = await axios.get(`http://localhost:8000/admin/intent/${params.tag}`);
+            setTag(response.data.tag);
+            setResponseText(response.data.response_text);
+            setInputPatterns(response.data.input_patterns);
+            setResponseLinks(response.data.response_links);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
     const onSubmit = async () => {
         const data = {
             tag,
@@ -22,7 +42,7 @@ const CreateTag = () => {
             response_links: responseLinks
         };
 
-        axios.post('http://localhost:8000/admin/intent/create', data, {
+        axios.put('http://localhost:8000/admin/intent/update', data, {
             headers: { 'Content-Type': 'application/json' },
         }).then((response) => {
             setAlert({ title: 'Success', message: 'Successfully Submitted', severity: 'success' });
@@ -127,4 +147,4 @@ const CreateTag = () => {
     );
 };
 
-export default CreateTag;
+export default UpdateTag;

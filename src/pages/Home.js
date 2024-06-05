@@ -45,6 +45,7 @@ function Home() {
                             <ListItemText primary={<Typography variant="body1">{info.tag}</Typography>} />
                         </AccordionSummary>
                         <AccordionDetails>
+                            <Button variant="text"><Link to={`/update-tag/${info.tag}`}>Edit</Link></Button>
                             {info.response_text && (
                                 <Typography variant="body2" sx={{ mb: 2 }}>
                                     {info.response_text}
