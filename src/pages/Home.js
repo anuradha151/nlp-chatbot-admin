@@ -21,14 +21,6 @@ function Home() {
         fetchData();
     }, []);
 
-    const removeInput = (event) => {
-    }
-
-    const renderInputPatterns = (patterns) => {
-        return patterns.map((pattern) => (
-            <Chip key={pattern.id} label={pattern.text} color="primary" variant="outlined" onDelete={removeInput} />
-        ));
-    };
     return (
         <Box sx={{ width: '100%', maxWidth: 600, margin: 'auto' }}>
             <Stack direction="row" spacing={30}>
@@ -39,32 +31,35 @@ function Home() {
             </Stack>
 
             <List dense={false}>
-                {intents.map((info) => (
-                    <Accordion key={info.id}>
-                        <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`panel${info.id}`}>
-                            <ListItemText primary={<Typography variant="body1">{info.tag}</Typography>} />
+                {intents.map((intent) => (
+                    <Accordion key={intent.id}>
+                        <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`panel${intent.id}`}>
+                            {/* <ListItemText primary={<Typography variant="body1">{intent.tag}</Typography>} /> */}
+                            <Typography variant="h6" gutterBottom>{intent.tag}</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                            <Button variant="text"><Link to={`/update-tag/${info.tag}`}>Edit</Link></Button>
-                            {info.response_text && (
+                            <Button variant="text"><Link to={`/update-tag/${intent.tag}`}>Edit</Link></Button>
+                            {intent.response_text && (
                                 <Typography variant="body2" sx={{ mb: 2 }}>
-                                    {info.response_text}
+                                    {intent.response_text}
                                 </Typography>
                             )}
-                            {info.input_patterns.length > 0 && (
-
+                            {intent.input_patterns.length > 0 && (
                                 <Stack direction="column" spacing={1}>
-                                    {renderInputPatterns(info.input_patterns)}
+                                    {intent.input_patterns.map((pattern) => (
+                                        <Chip key={pattern.id} label={pattern} color="primary" variant="outlined" />
+                                    ))}
                                 </Stack>
 
                             )}
-                            {info.tag === 'placement' && (
-                                <LinkUI href={info.response_links[0].text} underline="none" sx={{ color: 'primary.main' }}>
-                                    Learn More
-                                </LinkUI>
-                            )}
-                            {info.tag === 'fees' && (
-                                <Typography variant="body2">Visit ESOFT website for details.</Typography>
+                            {intent.response_links.length > 0 && (
+                                <Stack direction="column" spacing={1}>
+                                    {intent.response_links.map((link) => (
+                                        <LinkUI key={link.id} href={link} target="_blank">
+                                            {link}
+                                        </LinkUI>
+                                    ))}
+                                </Stack>
                             )}
                         </AccordionDetails>
                     </Accordion>
