@@ -22,28 +22,28 @@ function Home() {
     }, []);
 
     return (
-        <Box sx={{ width: '100%', maxWidth: 600, margin: 'auto' }}>
+        <Box sx={{ width: '100%', maxWidth: 600, margin: 'auto', mt: 2 }}>
             <Stack direction="row" spacing={30}>
                 <Typography variant="h5" sx={{ mb: 2 }}>
                     Intent configurations
                 </Typography>
-                <Button variant="text"><Link to="/create-tag">Create New</Link></Button>
+                <Button variant="contained" component={Link} to="/create-tag" >Create New</Button>
             </Stack>
 
             <List dense={false}>
                 {intents.map((intent) => (
                     <Accordion key={intent.id}>
                         <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`panel${intent.id}`}>
-                            {/* <ListItemText primary={<Typography variant="body1">{intent.tag}</Typography>} /> */}
                             <Typography variant="h6" gutterBottom>{intent.tag}</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                            <Button variant="text"><Link to={`/update-tag/${intent.tag}`}>Edit</Link></Button>
+                            <Button variant="contained" color="success" component={Link} to={`/update-tag/${intent.tag}`}>Edit</Button>
                             {intent.response_text && (
-                                <Typography variant="body2" sx={{ mb: 2 }}>
-                                    {intent.response_text}
+                                <Typography variant="body2" sx={{ mb: 2, mt: 2 }}>
+                                    Response Text: {intent.response_text}
                                 </Typography>
                             )}
+                            <Typography variant="body2" sx={{ mb: 2 }}>Input Patterns: </Typography>
                             {intent.input_patterns.length > 0 && (
                                 <Stack direction="column" spacing={1}>
                                     {intent.input_patterns.map((pattern) => (
@@ -52,6 +52,7 @@ function Home() {
                                 </Stack>
 
                             )}
+                            <Typography variant="body2" sx={{ mb: 2, mt: 2 }}>Response Links: </Typography>
                             {intent.response_links.length > 0 && (
                                 <Stack direction="column" spacing={1}>
                                     {intent.response_links.map((link) => (

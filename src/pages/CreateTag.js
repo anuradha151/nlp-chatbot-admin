@@ -42,13 +42,13 @@ const CreateTag = () => {
     };
 
     return (
-        <Box sx={{ width: '100%', maxWidth: 600, margin: 'auto' }}>
+        <Box sx={{ width: '100%', maxWidth: 600, margin: 'auto', mt: 2 }}>
             <Stack spacing={2}>
                 <Stack direction="row" spacing={30}>
                     <Typography variant="h5" sx={{ mb: 2 }}>
                         Intent configurations
                     </Typography>
-                    <Button variant="text"><Link to="/">Back</Link></Button>
+                    <Button variant="contained" component={Link} to="/" color="warning" >Back</Button>
                 </Stack>
                 <FormControl>
                     <TextField

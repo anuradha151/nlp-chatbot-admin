@@ -44,7 +44,7 @@ const UpdateTag = () => {
 
         axios.put('http://localhost:8000/admin/intent/update', data, {
             headers: { 'Content-Type': 'application/json' },
-        }).then((response) => {
+        }).then(() => {
             setAlert({ title: 'Success', message: 'Successfully Submitted', severity: 'success' });
 
             setTag('');
@@ -55,20 +55,17 @@ const UpdateTag = () => {
             setResponseLinks([]);
         }).catch((error) => {
             setAlert({ title: 'Error', message: error.response.data.detail, severity: 'error' });
-
         });
-
-
     };
 
     return (
-        <Box sx={{ width: '100%', maxWidth: 600, margin: 'auto' }}>
+        <Box sx={{ width: '100%', maxWidth: 600, margin: 'auto', mt: 2 }}>
             <Stack spacing={2}>
                 <Stack direction="row" spacing={30}>
                     <Typography variant="h5" sx={{ mb: 2 }}>
                         Intent configurations
                     </Typography>
-                    <Button variant="text"><Link to="/">Back</Link></Button>
+                    <Button variant="contained" component={Link} to="/" color="warning" >Back</Button>
                 </Stack>
                 <FormControl>
                     <TextField
@@ -103,7 +100,7 @@ const UpdateTag = () => {
                         {inputPatterns.map((pattern, index) => (
                             <div key={index}                                >
                                 {pattern}
-                                <Button onClick={() => setInputPatterns(inputPatterns.filter((_, i) => i !== index))} >Remove</Button>
+                                <Button color="error" onClick={() => setInputPatterns(inputPatterns.filter((_, i) => i !== index))} >Remove</Button>
                             </div>
                         ))}
                     </FormGroup>
@@ -125,7 +122,7 @@ const UpdateTag = () => {
                         {responseLinks.map((link, index) => (
                             <div key={index}                                >
                                 <LinkUI href={link} underline="none" sx={{ color: 'primary.main' }} target='_blank' > {link} </LinkUI>
-                                <Button onClick={() => setResponseLinks(responseLinks.filter((_, i) => i !== index))} >Remove</Button>
+                                <Button color="error" onClick={() => setResponseLinks(responseLinks.filter((_, i) => i !== index))} >Remove</Button>
                             </div>
                         ))}
                     </FormGroup>
@@ -140,7 +137,7 @@ const UpdateTag = () => {
                     </Alert>
                 )}
                 <Button type="submit" variant="contained" onClick={onSubmit}>
-                    Create Tag
+                    Update Tag
                 </Button>
             </Stack>
         </Box>
