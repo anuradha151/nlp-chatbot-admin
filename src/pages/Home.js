@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, List, ListItemText, Accordion, AccordionSummary, AccordionDetails, Link as LinkUI, Chip, Stack, Button, Divider, Alert, AlertTitle } from '@mui/material';
+import { Box, Typography, List, ListItemText, Accordion, AccordionSummary, AccordionDetails, Link as LinkUI, Chip, Stack, Button, Divider, Alert, AlertTitle, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import axios from 'axios';
 
@@ -8,6 +8,15 @@ import { Link } from "react-router-dom";
 function Home() {
     const [intents, setIntents] = useState([]);
     const [alert, setAlert] = useState(null);
+    const [open, setOpen] = useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -22,6 +31,7 @@ function Home() {
     }, []);
 
     const handleDeployAPI = async () => {
+        setOpen(false);
         try {
             await axios.get('http://localhost:8000/admin/model/train/deploy');
             setAlert({ title: 'Success', message: 'Chatbot updated successfully', severity: 'success' });
@@ -33,22 +43,47 @@ function Home() {
 
     return (
         <Box sx={{ width: '100%', maxWidth: 600, margin: 'auto', mt: 2 }}>
-           <Stack direction="row" spacing={1} justifyContent='space-between'>
+            <Stack direction="row" spacing={1} justifyContent='space-between'>
                 <Typography variant="h5" sx={{ mb: 2 }}>
                     Intent configurations
                 </Typography>
-                <Button variant="contained" color="error" onClick={handleDeployAPI} to="/create-tag" >Deploy Model</Button>
+                <Button variant="contained" color="error" onClick={handleClickOpen}>
+                    Deploy Model
+                </Button>
+                <Dialog
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">
+                        WARNING!!! WARNING!!! Confirmation Required
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Updating model with new changes can be a time-consuming process.
+                            This action cannot be undone. Are you sure you want to proceed?
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleClose}>I am not Sure</Button>
+                        <Button onClick={handleDeployAPI} autoFocus>
+                            Yes, Update
+                        </Button>
+                    </DialogActions>
+                </Dialog>
                 <Button variant="contained" component={Link} to="/create-tag" >Create New</Button>
             </Stack>
             {alert && (
-                    <Alert
-                        severity={alert.severity}
-                        onClose={() => setAlert(null)}
-                    >
-                        <AlertTitle>{alert.title}</AlertTitle>
-                        {alert.message}
-                    </Alert>
-                )}
+                <Alert 
+                    severity={alert.severity}
+                    onClose={() => setAlert(null)}
+                    sx={{ mt: 2 }}
+                >
+                    <AlertTitle>{alert.title}</AlertTitle>
+                    {alert.message}
+                </Alert>
+            )}
             <List dense={false}>
                 {intents.map((intent) => (
                     <Accordion key={intent.id}>
