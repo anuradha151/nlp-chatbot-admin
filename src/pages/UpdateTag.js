@@ -61,7 +61,7 @@ const UpdateTag = () => {
     return (
         <Box sx={{ width: '100%', maxWidth: 600, margin: 'auto', mt: 2 }}>
             <Stack spacing={2}>
-                <Stack direction="row" spacing={30}>
+                <Stack direction="row" spacing={1} justifyContent='space-between'>
                     <Typography variant="h5" sx={{ mb: 2 }}>
                         Intent configurations
                     </Typography>
