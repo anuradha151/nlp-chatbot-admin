@@ -40,6 +40,16 @@ const CreateTag = () => {
 
     };
 
+
+    const handleAdd = () => {
+        const lines = inputPattern
+            .split(/\r?\n/) 
+            .filter(line => line.trim() !== ''); 
+
+        setInputPatterns([...inputPatterns, ...lines]);
+        setInputPattern('');
+    };
+
     return (
         <Box sx={{ width: '100%', maxWidth: 600, margin: 'auto', mt: 2 }}>
             <Stack spacing={2}>
@@ -67,15 +77,17 @@ const CreateTag = () => {
                 </FormControl>
                 <FormControl>
                     <TextField
-                        label="Input Pattern"
-                        name="input_pattern"
-                        value={inputPattern} // convert array to comma-separated string
+                        id="outlined-multiline-static"
+                        label="Multi-line Text Field"
+                        multiline
+                        rows={8}
+                        value={inputPattern}
                         onChange={event => setInputPattern(event.target.value)}
+                        sx={{ whiteSpace: 'pre-wrap' }}
                     />
-                    <Button disabled={inputPattern === ''} onClick={() => {
-                        setInputPatterns([...inputPatterns, inputPattern])
-                        setInputPattern('')
-                    }} >Add</Button>
+                    <Button disabled={inputPattern === ''} onClick={handleAdd}>
+                        Add
+                    </Button>
                 </FormControl>
                 <FormControl component="fieldset" legend="Input Patterns">
                     <FormGroup>
@@ -89,9 +101,9 @@ const CreateTag = () => {
                 </FormControl>
                 <FormControl>
                     <TextField
-                        label="Response Links"
+                        label="Redirect Urls"
                         name="response_links"
-                        value={responseLink} // convert array to comma-separated string
+                        value={responseLink} 
                         onChange={event => setResponseLink(event.target.value)}
                     />
                     <Button disabled={responseLink === ''} onClick={() => {
@@ -99,7 +111,7 @@ const CreateTag = () => {
                         setResponseLink('')
                     }} >Add</Button>
                 </FormControl>
-                <FormControl component="fieldset" legend="Response Links">
+                <FormControl component="fieldset" legend="Redirect Urls">
                     <FormGroup>
                         {responseLinks.map((link, index) => (
                             <div key={index}                                >
