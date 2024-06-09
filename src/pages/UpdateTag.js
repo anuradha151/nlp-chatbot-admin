@@ -95,7 +95,7 @@ const UpdateTag = () => {
                 <FormControl>
                 <TextField
                         id="outlined-multiline-static"
-                        label="Multi-line Text Field"
+                        label="Input Patterns"
                         multiline
                         rows={8}
                         value={inputPattern}

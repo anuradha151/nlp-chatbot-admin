@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, List, ListItemText, Accordion, AccordionSummary, AccordionDetails, Link as LinkUI, Chip, Stack, Button, Divider, Alert, AlertTitle, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
+import { CircularProgress, Box, Typography, List, ListItemText, Accordion, AccordionSummary, AccordionDetails, Link as LinkUI, Chip, Stack, Button, Divider, Alert, AlertTitle, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import axios from 'axios';
 
@@ -9,6 +9,7 @@ function Home() {
     const [intents, setIntents] = useState([]);
     const [alert, setAlert] = useState(null);
     const [open, setOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -32,11 +33,14 @@ function Home() {
 
     const handleDeployAPI = async () => {
         setOpen(false);
+        setLoading(true);
         try {
             await axios.get('http://localhost:8000/admin/model/train/deploy');
+            setLoading(false);
             setAlert({ title: 'Success', message: 'Chatbot updated successfully', severity: 'success' });
         } catch (error) {
             console.error('Error fetching data:', error);
+            setLoading(false);
             setAlert({ title: 'Error', message: 'Unable to deploy the changes', severity: 'error' });
         }
     };
@@ -75,7 +79,7 @@ function Home() {
                 <Button variant="contained" component={Link} to="/create-tag" >Create New</Button>
             </Stack>
             {alert && (
-                <Alert 
+                <Alert
                     severity={alert.severity}
                     onClose={() => setAlert(null)}
                     sx={{ mt: 2 }}
@@ -84,6 +88,13 @@ function Home() {
                     {alert.message}
                 </Alert>
             )}
+            {loading && (
+                <Box sx={{ display: 'flex', ml: "50%", mt: 2 }}>
+                    <CircularProgress />
+                </Box>
+            )}
+
+
             <List dense={false}>
                 {intents.map((intent) => (
                     <Accordion key={intent.id}>
